@@ -1,0 +1,8 @@
+{
+  "framework": null,
+  "buildCommand": "bun run export",
+  "outputDirectory": ".react-email/out",
+  "installCommand": "bun install"
+}
+
+

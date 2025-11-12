@@ -1,0 +1,615 @@
+# React Email Cursor Rules
+
+## Overview
+These rules guide development of email templates using React Email components. React Email components are designed to work across all major email clients (Gmail, Apple Mail, Outlook, Yahoo Mail, HEY, Superhuman).
+
+## Core Structure
+
+### Email Template Structure
+Every email template should follow this structure:
+
+```tsx
+import {
+  Html,
+  Head,
+  Body,
+  Preview,
+  Container,
+  // ... other components
+} from '@react-email/components';
+
+interface EmailProps {
+  // Define props with optional defaults
+  propName?: string;
+}
+
+export const EmailTemplate = ({ propName }: EmailProps) => (
+  <Html lang="en" dir="ltr">
+    <Head />
+    <Preview>Preview text shown in email client inbox</Preview>
+    <Body style={main}>
+      <Container style={container}>
+        {/* Email content */}
+      </Container>
+    </Body>
+  </Html>
+);
+
+// Always export PreviewProps for development
+EmailTemplate.PreviewProps = {
+  propName: 'default value',
+} as EmailProps;
+
+export default EmailTemplate;
+```
+
+## Component Guidelines
+
+### Html Component
+- **Always** wrap email content in `<Html>` component
+- Use `lang="en"` and `dir="ltr"` attributes
+- Required as root wrapper
+
+```tsx
+<Html lang="en" dir="ltr">
+  {/* content */}
+</Html>
+```
+
+### Head Component
+- Place inside `<Html>` but before `<Body>`
+- Use for metadata, fonts, and styles
+- Can be self-closing: `<Head />`
+
+```tsx
+<Html>
+  <Head>
+    <title>Email Title</title>
+    {/* Font components, styles */}
+  </Head>
+  {/* Body content */}
+</Html>
+```
+
+### Preview Component
+- Place immediately after `<Head>`
+- Provides preview text shown in email client inbox
+- Keep concise (50-100 characters recommended)
+- Use dynamic content when appropriate
+
+```tsx
+<Preview>Log in with this magic link</Preview>
+// or
+<Preview>{`Join ${username} on ${platform}`}</Preview>
+```
+
+### Body Component
+- Required wrapper for email content
+- Use inline styles via `style` prop
+- Set background color and font family here
+
+```tsx
+<Body style={main}>
+  {/* content */}
+</Body>
+
+const main = {
+  backgroundColor: '#ffffff',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+};
+```
+
+### Container Component
+- Centers content horizontally
+- Use for main content wrapper
+- Set max-width and padding via styles
+
+```tsx
+<Container style={container}>
+  {/* content */}
+</Container>
+
+const container = {
+  backgroundColor: '#ffffff',
+  margin: '0 auto',
+  padding: '20px 0 48px',
+  maxWidth: '600px', // Optional, for fixed width
+};
+```
+
+### Section Component
+- Use for grouping related content
+- Provides padding and layout control
+- Can nest within Container
+
+```tsx
+<Section style={box}>
+  {/* grouped content */}
+</Section>
+
+const box = {
+  padding: '0 48px',
+};
+```
+
+### Text Component
+- Use instead of `<p>` tags for better email client compatibility
+- Always use inline styles
+- Set color, fontSize, lineHeight, fontFamily
+
+```tsx
+<Text style={paragraph}>
+  Your text content here
+</Text>
+
+const paragraph = {
+  color: '#333',
+  fontSize: '16px',
+  lineHeight: '24px',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  margin: '0',
+};
+```
+
+### Heading Component
+- Use semantic headings (h1-h6)
+- Specify `as` prop: `as="h1"`, `as="h2"`, etc.
+- Style with inline styles
+
+```tsx
+<Heading as="h1" style={h1}>
+  Welcome
+</Heading>
+
+const h1 = {
+  color: '#333',
+  fontSize: '24px',
+  fontWeight: 'bold',
+  margin: '40px 0',
+  padding: '0',
+};
+```
+
+### Button Component
+- **Important**: This is actually a styled `<a>` tag, not a real button
+- Requires `href` prop (required)
+- Use `target="_blank"` for external links (default)
+- Style with inline styles, including padding, backgroundColor, borderRadius
+
+```tsx
+<Button
+  href="https://example.com"
+  style={button}
+>
+  Click me
+</Button>
+
+const button = {
+  backgroundColor: '#656ee8',
+  borderRadius: '5px',
+  color: '#fff',
+  fontSize: '16px',
+  fontWeight: 'bold',
+  textDecoration: 'none',
+  textAlign: 'center' as const,
+  display: 'block',
+  width: '100%',
+  padding: '10px',
+};
+```
+
+### Link Component
+- Use for inline links within text
+- Always include `target="_blank"` for external links
+- Style with inline styles
+
+```tsx
+<Text>
+  Visit our{' '}
+  <Link href="https://example.com" style={anchor}>
+    website
+  </Link>
+  {' '}for more info.
+</Text>
+
+const anchor = {
+  color: '#556cd6',
+  textDecoration: 'underline',
+};
+```
+
+### Image Component (Img)
+- **Always** specify `width` and `height` attributes (not just styles)
+- Use `alt` text for accessibility
+- Use absolute URLs (not relative paths)
+- Consider using `baseUrl` pattern for development
+
+```tsx
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : '';
+
+<Img
+  src={`${baseUrl}/static/logo.png`}
+  width="49"
+  height="21"
+  alt="Company Logo"
+  style={logo}
+/>
+
+const logo = {
+  margin: '0 auto',
+};
+```
+
+### Hr Component
+- Use for horizontal dividers
+- Style border color and margin
+
+```tsx
+<Hr style={hr} />
+
+const hr = {
+  borderColor: '#e6ebf1',
+  margin: '20px 0',
+};
+```
+
+### Row and Column Components
+- Use `Row` to group `Column` components horizontally
+- Specify column widths via styles
+- Use `align` prop on Column: `"left"`, `"center"`, `"right"`
+
+```tsx
+<Row>
+  <Column align="right" style={{ width: '50%' }}>
+    {/* Left content */}
+  </Column>
+  <Column align="left" style={{ width: '50%' }}>
+    {/* Right content */}
+  </Column>
+</Row>
+```
+
+### Font Component
+- Place inside `<Head>` component
+- Specify `fontFamily`, `fallbackFontFamily`, and `webFont`
+- Use for custom fonts
+
+```tsx
+<Head>
+  <Font
+    fontFamily="Roboto"
+    fallbackFontFamily="Verdana"
+    webFont={{
+      url: 'https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2',
+      format: 'woff2',
+    }}
+    fontWeight={400}
+    fontStyle="normal"
+  />
+</Head>
+```
+
+### Tailwind Component
+- Wrap content to enable Tailwind CSS classes
+- Use `className` prop instead of `style` when using Tailwind
+- Mix with inline styles if needed
+
+```tsx
+<Tailwind>
+  <Body className="mx-auto my-auto bg-white px-2 font-sans">
+    <Container className="mx-auto my-[40px] max-w-[465px] rounded border border-[#eaeaea] border-solid p-[20px]">
+      {/* Tailwind-styled content */}
+    </Container>
+  </Body>
+</Tailwind>
+```
+
+### CodeBlock Component
+- Import from `@react-email/code-block` (separate package)
+- Requires `code`, `language`, and `theme` props
+- Use for displaying code snippets
+
+```tsx
+import { CodeBlock, dracula } from '@react-email/code-block';
+
+<CodeBlock
+  code={`const example = 'Hello, world!';`}
+  language="javascript"
+  theme={dracula}
+  lineNumbers
+/>
+```
+
+### CodeInline Component
+- Import from `@react-email/code-inline` (separate package)
+- Use for inline code within text
+
+```tsx
+import { CodeInline } from '@react-email/code-inline';
+
+<Text>
+  Use the <CodeInline>npm install</CodeInline> command.
+</Text>
+```
+
+### Markdown Component
+- Use for rendering Markdown content
+- Wrap markdown string in template literal
+
+```tsx
+<Markdown>
+  {`# Hello World
+
+  This is a **Markdown** component.`}
+</Markdown>
+```
+
+## Styling Best Practices
+
+### Inline Styles Only
+- **Always** use inline styles via `style` prop
+- Email clients strip out `<style>` tags and external CSS
+- Use TypeScript `as const` for literal types when needed
+
+```tsx
+const button = {
+  backgroundColor: '#656ee8',
+  textAlign: 'center' as const, // Required for literal type
+};
+```
+
+### Style Object Patterns
+- Define styles as const objects outside component
+- Use descriptive names: `main`, `container`, `paragraph`, `button`, `footer`
+- Group related styles together
+
+```tsx
+const main = {
+  backgroundColor: '#ffffff',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+};
+
+const container = {
+  backgroundColor: '#ffffff',
+  margin: '0 auto',
+  padding: '20px 0 48px',
+};
+
+const paragraph = {
+  color: '#333',
+  fontSize: '16px',
+  lineHeight: '24px',
+};
+```
+
+### Font Families
+- Always provide fallback fonts
+- Use system font stacks for better compatibility
+- Common pattern: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif`
+
+### Colors
+- Use hex colors (`#ffffff`) for consistency
+- Avoid rgba/rgb in styles (use hex equivalents)
+- Consider using design system colors when available
+
+### Spacing
+- Use `margin` and `padding` in styles
+- Common patterns: `margin: '20px 0'`, `padding: '0 48px'`
+- Be explicit with spacing values
+
+## TypeScript Patterns
+
+### Interface Definitions
+- Always define props interface
+- Use optional props with `?` for flexibility
+- Export interface if used elsewhere
+
+```tsx
+interface EmailProps {
+  username?: string;
+  userImage?: string;
+  inviteLink?: string;
+}
+```
+
+### PreviewProps Pattern
+- Always export `PreviewProps` for development/preview
+- Use `as` type assertion for type safety
+
+```tsx
+EmailTemplate.PreviewProps = {
+  username: 'alanturing',
+  userImage: `${baseUrl}/static/user.png`,
+  inviteLink: 'https://example.com/invite/foo',
+} as EmailProps;
+```
+
+### Base URL Pattern
+- Use environment variable for base URL
+- Fallback to empty string for development
+
+```tsx
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : '';
+```
+
+## Common Patterns
+
+### Magic Link / Code Display
+```tsx
+<Text style={{ ...text, marginBottom: '14px' }}>
+  Or, copy and paste this temporary login code:
+</Text>
+<code style={code}>{loginCode}</code>
+
+const code = {
+  display: 'inline-block',
+  padding: '16px 4.5%',
+  width: '90.5%',
+  backgroundColor: '#f4f4f4',
+  borderRadius: '5px',
+  border: '1px solid #eee',
+  color: '#333',
+};
+```
+
+### Footer Text
+```tsx
+<Text style={footer}>
+  <Link href="https://example.com" style={{ ...link, color: '#898989' }}>
+    Company Name
+  </Link>
+  , description text
+  <br />
+  Additional footer information.
+</Text>
+
+const footer = {
+  color: '#898989',
+  fontSize: '12px',
+  lineHeight: '22px',
+  marginTop: '12px',
+  marginBottom: '24px',
+};
+```
+
+### Centered Content
+```tsx
+<Section style={codeContainer}>
+  <Text style={code}>{validationCode}</Text>
+</Section>
+
+const codeContainer = {
+  background: 'rgba(0,0,0,.05)',
+  borderRadius: '4px',
+  margin: '16px auto 14px',
+  verticalAlign: 'middle',
+  width: '280px',
+};
+
+const code = {
+  color: '#000',
+  fontSize: '32px',
+  fontWeight: 700,
+  letterSpacing: '6px',
+  textAlign: 'center' as const,
+};
+```
+
+## Anti-Patterns to Avoid
+
+### ❌ Don't Use
+- `<div>` tags (use `Section` or `Container` instead)
+- `<p>` tags (use `Text` component instead)
+- External CSS files or `<style>` tags
+- CSS Grid or Flexbox (limited support)
+- JavaScript or event handlers
+- Relative image paths (use absolute URLs)
+- CSS classes without Tailwind component wrapper
+
+### ✅ Do Use
+- React Email components (`Text`, `Section`, `Container`, etc.)
+- Inline styles via `style` prop
+- Table-based layouts for complex designs (via Row/Column)
+- Absolute image URLs
+- TypeScript interfaces for props
+- PreviewProps for development
+
+## Email Client Compatibility
+
+### Tested Clients
+React Email components are tested with:
+- Gmail
+- Apple Mail
+- Outlook
+- Yahoo! Mail
+- HEY
+- Superhuman
+
+### Outlook-Specific Considerations
+- Outlook uses Word rendering engine (limited CSS support)
+- Avoid complex CSS properties
+- Use table-based layouts for complex designs
+- Test images carefully (Outlook can be finicky)
+
+### Gmail-Specific Considerations
+- Gmail strips many CSS properties
+- Use inline styles exclusively
+- Avoid background images in some contexts
+- Test on both web and mobile Gmail
+
+## Integration with Design System
+
+When working with the Autumn design system (`autumn-design-system.ts`):
+
+1. **Colors**: Use design system color tokens
+   ```tsx
+   import { autumnDesignSystem } from '../autumn-design-system';
+   
+   const button = {
+     backgroundColor: autumnDesignSystem.colors.brand.primary,
+     color: autumnDesignSystem.colors.text.primaryDark,
+   };
+   ```
+
+2. **Typography**: Map design system typography to email-safe styles
+   ```tsx
+   const heading = {
+     fontFamily: autumnDesignSystem.typography.main.fontFamily,
+     fontSize: autumnDesignSystem.typography.main.fontSize,
+     fontWeight: autumnDesignSystem.typography.main.fontWeight,
+     color: autumnDesignSystem.typography.main.color,
+   };
+   ```
+
+3. **Buttons**: Adapt design system button styles to email-compatible format
+   ```tsx
+   const button = {
+     backgroundColor: autumnDesignSystem.buttons.primary.backgroundColor,
+     color: autumnDesignSystem.buttons.primary.color,
+     padding: `${autumnDesignSystem.buttons.primary.padding.vertical} ${autumnDesignSystem.buttons.primary.padding.horizontal}`,
+     borderRadius: autumnDesignSystem.buttons.primary.borderRadius,
+   };
+   ```
+
+## File Organization
+
+### Recommended Structure
+```
+emails/
+  reference/          # Example templates
+  templates/          # Production templates
+  static/            # Images and assets
+```
+
+### Naming Conventions
+- Component files: `kebab-case.tsx` (e.g., `magic-link.tsx`)
+- Component names: `PascalCase` (e.g., `MagicLinkEmail`)
+- Style objects: `camelCase` (e.g., `main`, `container`, `button`)
+
+## Resources
+
+- Official Docs: https://react.email/docs
+- Component Reference: https://react.email/docs/components
+- GitHub: https://github.com/resend/react-email
+
+## Quick Reference Checklist
+
+When creating a new email template:
+
+- [ ] Wrap in `<Html>` with `lang` and `dir` attributes
+- [ ] Include `<Head />` component
+- [ ] Add `<Preview>` text
+- [ ] Wrap content in `<Body>` with styles
+- [ ] Use `<Container>` for main wrapper
+- [ ] Use `<Text>` instead of `<p>`
+- [ ] Use `<Heading>` with `as` prop for headings
+- [ ] Use inline styles only
+- [ ] Specify image `width` and `height` attributes
+- [ ] Use absolute URLs for images
+- [ ] Define TypeScript interface for props
+- [ ] Export `PreviewProps` for development
+- [ ] Test in multiple email clients

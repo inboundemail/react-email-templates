@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## inbound.new: React Email Templates
 
-## Getting Started
+A repository of high‑quality React Email templates built and maintained by the inbound.new team. Templates are authored with `@react-email/components`, Tailwind in emails via `<Tailwind />`, and web fonts via `<Font />`, with a lightweight design system to keep spacing, color, and typography consistent.
 
-First, run the development server:
+### Preview locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run email:dev   # launch the React Email preview server
+npm run email:build # production build for emails
+npm run email:export
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `design-systems/<brand>/<brand>-design-system.ts` — tokens used by all templates
+- `emails/<brand>/**` — brand templates and shared email components
+- `emails/autumn/marketing/**` — example marketing emails
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contributing
 
-## Learn More
+We welcome high‑quality templates. Please follow these guidelines:
 
-To learn more about Next.js, take a look at the following resources:
+1. Create a design system
+   - Add `design-systems/<your-brand>/<your-brand>-design-system.ts` patterned after `design-systems/autumn/autumn-design-system.ts`.
+   - Include tokens for colors, typography, spacing, borders, and button variants (primary/secondary/destructive).
+2. Build the first template using the rules
+   - Use the design system tokens and follow the project’s `react-email.mdc` guidelines.
+   - Use `<Tailwind />` and `<Font />` from `@react-email/components`.
+3. Polish and test
+   - Verify alignment and spacing in the React Email preview.
+   - Sanity‑check rendering in popular clients (Gmail, Apple Mail, Outlook) if possible.
+4. Add the rest
+   - After the first template looks perfect, implement the remaining templates in the set, reusing shared components (e.g., Logo card, buttons, footer, signature).
+5. Include screenshots
+   - Every PR must include at least one screenshot for each template (hero/top of email is fine).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### PR checklist
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Uses the brand design system (no hard‑coded colors that duplicate tokens).
+- Fonts are declared with `<Font />`; Tailwind classes are used for spacing/typography.
+- CTA buttons use the shared button component and appear above the footer.
+- Footer includes company address and a support mailto link.
+- Screenshots attached to the PR.

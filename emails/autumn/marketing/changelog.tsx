@@ -13,7 +13,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
-import { autumnDesignSystem } from '../../../autumn-design-system';
+import { autumnDesignSystem } from '../../../design-systems/autumn/autumn-design-system';
 import { LogoCard } from '../components/LogoCard';
 import { AutumnEmailFooter } from '../components/AutumnEmailFooter';
 import { AutumnEmailButton } from '../components/AutumnEmailButton';

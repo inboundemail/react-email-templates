@@ -3,13 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
     "lint": "eslint",
-    "email:dev": "email dev",
-    "email:build": "email build",
-    "email:export": "email export"
+    "dev": "email dev",
+    "build": "email build",
+    "export": "email export"
   },
   "dependencies": {
     "@react-email/components": "1.0.1",

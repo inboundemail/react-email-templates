@@ -1,6 +1,6 @@
 import { Button } from '@react-email/components';
 import { CSSProperties, ReactNode } from 'react';
-import { autumnDesignSystem } from '../../../autumn-design-system';
+import { autumnDesignSystem } from '../../../design-systems/autumn/autumn-design-system';
 
 type ButtonVariant = 'primary' | 'secondary' | 'destructive';
 

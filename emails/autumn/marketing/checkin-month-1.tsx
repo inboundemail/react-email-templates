@@ -12,7 +12,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
-import { autumnDesignSystem } from '../../../autumn-design-system';
+import { autumnDesignSystem } from '../../../design-systems/autumn/autumn-design-system';
 import { AutumnEmailButton } from '../components/AutumnEmailButton';
 import { LogoCard } from '../components/LogoCard';
 import { AutumnEmailFooter } from '../components/AutumnEmailFooter';

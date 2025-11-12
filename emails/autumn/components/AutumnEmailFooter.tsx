@@ -1,6 +1,6 @@
 import { Link, Text } from '@react-email/components';
 import { CSSProperties } from 'react';
-import { autumnDesignSystem } from '../../../autumn-design-system';
+import { autumnDesignSystem } from '../../../design-systems/autumn/autumn-design-system';
 
 interface AutumnEmailFooterProps {
   companyAddress: string;

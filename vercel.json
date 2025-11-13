@@ -1,8 +1,0 @@
-{
-  "framework": "next",
-  "buildCommand": "bun run build",
-  "outputDirectory": ".react-email/out",
-  "installCommand": "bun install"
-}
-
-

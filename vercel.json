@@ -1,5 +1,3 @@
 {
-  "buildCommand": "bun run build",
-  "outputDirectory": ".react-email/.next",
-  "framework": null
+    "outputDirectory": ".react-email/.next"
 }
